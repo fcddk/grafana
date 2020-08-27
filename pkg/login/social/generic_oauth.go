@@ -94,7 +94,12 @@ func (info *UserInfoJson) String() string {
 func (s *SocialGenericOAuth) UserInfo(client *http.Client, token *oauth2.Token) (*BasicUserInfo, error) {
 	s.log.Debug("Getting user info")
 	tokenData := s.extractFromToken(token)
-	apiData := s.extractFromAPI(client)
+	
+	var apiData *UserInfoJson
+	if s.apiUrl != "" {
+		apiData = s.extractFromAPI(client)
+	}
+	
 
 	userInfo := &BasicUserInfo{}
 	for _, data := range []*UserInfoJson{tokenData, apiData} {
